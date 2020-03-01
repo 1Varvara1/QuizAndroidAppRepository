@@ -24,7 +24,7 @@ public class AuthService extends Activity {
              String _login = user.Login;
              String _email = user.Email;
              String _role = user.Role;
-            String _passw = user.Password;
+             String _passw = user.Password;
              realm.commitTransaction();
 
 

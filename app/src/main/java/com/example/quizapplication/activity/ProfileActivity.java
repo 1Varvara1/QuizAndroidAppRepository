@@ -31,7 +31,8 @@ public class ProfileActivity extends BaseActivity {
         emailF.setText("Your email:    "+sPref.getString("email",""));
 
         TextView scoreF = (TextView)findViewById(R.id.scoreField);
-        scoreF.setText("Your score:    "+userService.getUserScore(sPref.getString("login","")));
+        String str = String.valueOf(userService.getUserScore(sPref.getString("login","")));
+        scoreF.setText("Your score:    "+str.substring(0,3));
 
 
     }

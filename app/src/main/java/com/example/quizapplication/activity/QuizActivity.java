@@ -338,7 +338,6 @@ public class QuizActivity extends BaseActivity implements  DialogUtilities.OnCom
         File path = this.getFilesDir();
         File file = new File( path,AppConstants.JSON_Question_set_fileName);
 
-
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(file);

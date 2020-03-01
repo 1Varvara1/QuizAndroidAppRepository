@@ -17,6 +17,7 @@ import com.example.quizapplication.R;
 import com.example.quizapplication.adapters.ResultAdapter;
 import com.example.quizapplication.constrants.AppConstants;
 import com.example.quizapplication.models.quiz.ResultModel;
+import com.example.quizapplication.realm_servces.MarkService;
 import com.example.quizapplication.utilities.ActivityUtilities;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
@@ -39,20 +40,22 @@ public class ScoreCardActivity extends BaseActivity implements OnChartValueSelec
     private int mQuestionsCount;
     private String mCategoryId;
     private ArrayList<ResultModel> mResultList;
-
+    MarkService markService ;
     private ResultAdapter mAdapter = null;
     private RecyclerView mRecyclerResult;
 
     private PieChart mPieChart;
+    float score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        markService = new MarkService();
         initVar();
         initView();
         initFunctionality();
         initListener();
+
     }
 
     private void initVar() {
@@ -121,6 +124,7 @@ public class ScoreCardActivity extends BaseActivity implements OnChartValueSelec
         mAdapter = new ResultAdapter(mContext, mActivity, mResultList);
         mRecyclerResult.setAdapter(mAdapter);
 
+        markService.AddMarkForUser(actualScore, this);
         // show full-screen ads
         // TODO AdsUtilities.getInstance(mContext).showFullScreenAd();
         // show banner ads
