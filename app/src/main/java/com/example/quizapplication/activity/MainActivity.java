@@ -328,8 +328,6 @@ public class MainActivity extends BaseActivity {
 
         DataInputStream in = new DataInputStream(fis);
 
-
-
         StringBuffer sb = new StringBuffer();
         BufferedReader br = null;
         try{

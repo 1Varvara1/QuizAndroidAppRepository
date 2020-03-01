@@ -5,15 +5,31 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.quizapplication.JsonModels.Category;
+import com.example.quizapplication.JsonModels.CategoryItem;
+import com.example.quizapplication.JsonModels.Questinarie;
 import com.example.quizapplication.JsonModels.Question;
+import com.example.quizapplication.JsonModels.TestAdder_CS_Basics;
 import com.example.quizapplication.R;
+import com.example.quizapplication.constrants.AppConstants;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -32,7 +48,7 @@ public class AddTestActivity extends AppCompatActivity {
     EditText option3;
     EditText option4;
     Spinner rightAnswer;
-
+Button addBtn;
 
     String  questionStr ;
     String option1Str ;
@@ -41,6 +57,16 @@ public class AddTestActivity extends AppCompatActivity {
     String option4Str;
     String rightAnswerStr ;
 
+
+    String str_QuestionsFile;
+    Questinarie ConvertQuestionsResult;
+
+    String  str_CategoryFile;
+    CategoryItem ConvertCategoryResult;
+
+    Category category;
+
+    RelativeLayout root;
 
     private void StrsInit(){
          questionStr = question.getText().toString();
@@ -85,8 +111,6 @@ public class AddTestActivity extends AppCompatActivity {
         this.option4Str = "";
         this.rightAnswerStr = "";
 
-
-
         SharedPreferences sPref = getSharedPreferences("sPrefer",MODE_PRIVATE);
         int testCountJson = sPref.getInt("testCountJson",0);
         question_category = String.valueOf(testCountJson+1);
@@ -101,15 +125,25 @@ public class AddTestActivity extends AppCompatActivity {
         option3= findViewById(R.id.o3);
         option4= findViewById(R.id.o4);
         rightAnswer= findViewById(R.id.answerSp);
+        addBtn=  findViewById(R.id.addBtn);
+        root =  findViewById(R.id.rl);
 
-
-        Spinner spinner = (Spinner) findViewById(R.id.answerSp);
+        Spinner spinner = findViewById(R.id.answerSp);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.rightAnswer, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
         SetCounterField();
+
+        TestAdder_CS_Basics adder = new TestAdder_CS_Basics();
+        ////////////////////////////////////////////////////////
+       /* try {
+            adder.AddTest(this.getFilesDir());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }*/
+        ///////////////////////////////////////////////////////
     }
 
     private void SetCounterField(){
@@ -118,18 +152,40 @@ public class AddTestActivity extends AppCompatActivity {
         countView.setText("Question "+counterField+"/25");
     }
 
-    public void AddQuestion(View view){
+    public void AddQuestion(View view)  {
 
         StrsInit();
         if (!areFieldsValid(fieldsArrayInit())) return;
-        Question question = new Question(questionStr, AnswersInit(),Integer.parseInt(rightAnswerStr), question_category);
+        Question question = new Question(questionStr, AnswersInit(),Integer.parseInt(rightAnswerStr)-1, question_category);
 
        //set question in the collection
         questions[counter] = question;
         // move to the new question
         counter++;
 
-        RefreshActivity();
+          if(counter<24){
+              addBtn.setText("Add");
+            RefreshActivity();
+        }
+        else if(counter==24){
+            addBtn.setText("Finish");
+            RefreshActivity();}
+        else{
+
+              boolean addResult = false;
+              try {
+                  addResult = addTest();
+              } catch (IOException e) {
+                  e.printStackTrace();
+              }
+
+              if(addResult){
+
+                  Snackbar.make(root,"Added", Snackbar.LENGTH_SHORT).show();
+              }
+        }
+
+
     }
 
     boolean areFieldsValid(ArrayList<String> fieldsStr){
@@ -165,5 +221,172 @@ public class AddTestActivity extends AppCompatActivity {
             }
              })
                 .show();
+    }
+
+    private boolean addTest() throws IOException {
+
+        DeserializeQuestionsFile();
+        ConvertStrToJsonQuestionFile();
+
+        AddTestToQuestinarieModel();
+
+        boolean resultQuestionAdding = SerializeQuestionsFile();
+        addCategoryToFile();
+
+        return true;
+    }
+
+    private void  DeserializeQuestionsFile() throws FileNotFoundException {
+
+
+        File path = this.getFilesDir();
+
+        File file = new File( path,AppConstants.JSON_Question_set_fileName);
+
+        InputStream inputStream   = new FileInputStream(file.getPath());
+        StringBuffer sb = new StringBuffer();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(inputStream));
+            String temp;
+            while ((temp = br.readLine()) != null)
+                sb.append(temp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        str_QuestionsFile = sb.toString();
+    }
+
+
+    private void ConvertStrToJsonQuestionFile(){
+
+        Gson gson = new Gson();
+        ConvertQuestionsResult = gson.fromJson(str_QuestionsFile, Questinarie.class);
+
+    }
+
+    private void AddTestToQuestinarieModel(){
+
+        for (Question q:questions ) {
+            ConvertQuestionsResult.getQuestionnaires().add(q);
+        }
+    }
+
+    private boolean SerializeQuestionsFile() throws IOException {
+
+        Gson gson = new Gson();
+        String strToWrite =  gson.toJson(ConvertQuestionsResult);
+
+        File path = this.getFilesDir();
+        File file = new File( path,AppConstants.JSON_Question_set_fileName);
+
+            FileOutputStream stream = new FileOutputStream(file, false);
+            try {
+                stream.write(strToWrite.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                stream.close();
+            }
+
+      return true;
+
+    }
+
+    private boolean addCategoryToFile() throws IOException {
+
+        category = new Category(question_category,  getCategoryName());
+       // CategoryItem item = new CategoryItem();
+        increase_SharedPreference_testCountJson_Field();
+
+
+        DeserializeCategoryFile();
+        ConvertStrToJsonCategoryFile();
+
+        AddTestToCategoryItemModel();
+
+        boolean resultCategoryAdding = SerializeCategoryFile();
+
+        return false;
+    }
+
+    private void increase_SharedPreference_testCountJson_Field(){
+        SharedPreferences sPref = getSharedPreferences("sPrefer",MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = sPref.edit();
+        prefEditor.putInt("testCountJson",Integer.parseInt(question_category));
+        prefEditor.commit();
+
+    }
+    private String getCategoryName(){
+
+        SharedPreferences sPref = getSharedPreferences("sPrefer",MODE_PRIVATE);
+        String result  = sPref.getString("testName","");
+        return result ;
+
+    }
+
+
+    private void  DeserializeCategoryFile() throws FileNotFoundException {
+
+        File path = this.getFilesDir();
+        File file = new File( path,AppConstants.JSON_Quiz_category_fileName);
+
+        InputStream inputStream   = new FileInputStream(file.getPath());
+
+        StringBuffer sb = new StringBuffer();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(inputStream ));
+            String temp;
+            while ((temp = br.readLine()) != null)
+                sb.append(temp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        str_CategoryFile = sb.toString();
+    }
+    private void ConvertStrToJsonCategoryFile(){
+
+        Gson gson = new Gson();
+        ConvertCategoryResult = gson.fromJson(str_CategoryFile, CategoryItem.class);
+
+    }
+
+    private void AddTestToCategoryItemModel(){
+
+        ConvertCategoryResult.getItems().add(category);
+    }
+
+    private boolean SerializeCategoryFile() throws IOException {
+
+        Gson gson = new Gson();
+        String strToWrite =  gson.toJson(ConvertCategoryResult);
+
+        File path = this.getFilesDir();
+        File file = new File( path,AppConstants.JSON_Quiz_category_fileName);
+
+        FileOutputStream stream = new FileOutputStream(file, false);
+        try {
+            stream.write(strToWrite.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            stream.close();
+        }
+
+        return true;
+
     }
 }

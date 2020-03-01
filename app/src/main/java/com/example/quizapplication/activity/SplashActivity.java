@@ -12,12 +12,9 @@ import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.example.quizapplication.JsonModels.Questinarie;
-import com.example.quizapplication.JsonModels.Question;
 import com.example.quizapplication.R;
 import com.example.quizapplication.constrants.AppConstants;
 import com.example.quizapplication.utilities.ActivityUtilities;
-import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -44,12 +41,87 @@ public class SplashActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.ivSplashIcon);
         animation = AnimationUtils.loadAnimation(getBaseContext(), R.anim.rotate);
 
-       try{
-           TestJsonConvert();
-       }
-       catch (IOException e){
+        try {
+            StartFileInit();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-       }
+    private void StartFileInit()throws IOException {
+
+
+        StringBuffer sb = new StringBuffer();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(getAssets().open(AppConstants.QUESTION_FILE)));
+            String temp;
+            while ((temp = br.readLine()) != null)
+                sb.append(temp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        String str_QuestionsFile = sb.toString();
+
+
+
+        File path = this.getFilesDir();
+        File file = new File( path,AppConstants.JSON_Question_set_fileName);
+        boolean exists = file.exists();
+
+        if(!exists){
+            FileOutputStream stream = new FileOutputStream(file);
+            try {
+                stream.write(str_QuestionsFile.getBytes());
+            } finally {
+                stream.close();
+            }
+        }
+
+
+
+        ///////////////////////////////////Reading file with categories//////////////////////////////////
+
+        StringBuffer sb1 = new StringBuffer();
+        BufferedReader br1 = null;
+        try {
+            br1 = new BufferedReader(new InputStreamReader(getAssets().open(AppConstants.CONTENT_FILE )));
+            String temp;
+            while ((temp = br1.readLine()) != null)
+                sb1.append(temp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br1.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        String str_CategoryFile = sb1.toString();
+
+
+        File path1 = this.getFilesDir();
+        File file1 = new File( path1,AppConstants.JSON_Quiz_category_fileName);
+        boolean exists1 = file1.exists();
+
+        if(!exists1){
+            FileOutputStream stream = new FileOutputStream(file1);
+            try {
+                stream.write(str_CategoryFile.getBytes());
+            } finally {
+                stream.close();
+            }
+        }
+
+
+
     }
 
 
@@ -97,7 +169,7 @@ public class SplashActivity extends AppCompatActivity {
 
    public void  TestJsonConvert() throws IOException {
 
-     Question[] questions = new Question[2];
+   /*  Question[] questions = new Question[2];
       String [] s1= new String [] {"library","lang","man","school"};
       String [] s2= new String [] {"library","name","city","object"};
 
@@ -108,7 +180,7 @@ public class SplashActivity extends AppCompatActivity {
 
        Gson gson = new Gson();
 
-       String str= gson.toJson(q);
+       String str= gson.toJson(q);*/
 ///////////////////////////////////Reading file with questions //////////////////////////////////
 
        StringBuffer sb = new StringBuffer();

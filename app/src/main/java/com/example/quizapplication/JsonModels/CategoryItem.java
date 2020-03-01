@@ -1,17 +1,19 @@
 package com.example.quizapplication.JsonModels;
 
-public class CategoryItem {
-    public CategoryItem(Category[] items) {
-        this.items = items;
-    }
+import java.util.ArrayList;
 
-    public Category[] getItems() {
+public class CategoryItem {
+    public ArrayList<Category> getItems() {
         return items;
     }
 
-    public void setItems(Category[] items) {
+    public CategoryItem(ArrayList<Category> items) {
         this.items = items;
     }
 
-    Category [] items;
+    public void setItems(ArrayList<Category> items) {
+        this.items = items;
+    }
+
+    ArrayList<Category> items;
 }
