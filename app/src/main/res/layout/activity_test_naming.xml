@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.TestNaming">
+
+    <include
+        android:id="@+id/toolbarTop"
+        layout="@layout/add_testname_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/errorLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="30dp"
+        android:layout_below="@id/toolbarTop"
+        android:textColor="@color/red"/>
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/testNameField"
+        android:hint="Name your test!"
+        android:text=""
+        android:layout_marginTop="25dp"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="@color/colorPrimaryDark"
+        android:textSize="20sp"
+
+        app:met_floatingLabel="highlight"
+        app:met_baseColor="#0056d3"
+        app:met_primaryColor="#982360"
+        app:met_errorColor="#000000"
+        app:met_singleLineEllipsis="true"
+        android:layout_below="@id/errorLabel"
+        ></com.rengwuxian.materialedittext.MaterialEditText>
+
+
+    <Button
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="262dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/testNameField"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="73dp"
+        android:onClick="onSetNameClick"
+        android:text="Set the name"></Button>
+
+</RelativeLayout>
