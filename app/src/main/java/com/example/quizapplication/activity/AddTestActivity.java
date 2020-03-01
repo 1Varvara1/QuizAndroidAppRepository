@@ -11,9 +11,17 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.quizapplication.JsonModels.Questinarie;
 import com.example.quizapplication.JsonModels.Question;
 import com.example.quizapplication.R;
+import com.example.quizapplication.constrants.AppConstants;
+import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -41,6 +49,9 @@ public class AddTestActivity extends AppCompatActivity {
     String option4Str;
     String rightAnswerStr ;
 
+
+    String str_QuestionsFile;
+    Questinarie ConvertQuestionsResult;
 
     private void StrsInit(){
          questionStr = question.getText().toString();
@@ -118,7 +129,7 @@ public class AddTestActivity extends AppCompatActivity {
         countView.setText("Question "+counterField+"/25");
     }
 
-    public void AddQuestion(View view){
+    public void AddQuestion(View view) throws IOException {
 
         StrsInit();
         if (!areFieldsValid(fieldsArrayInit())) return;
@@ -129,7 +140,15 @@ public class AddTestActivity extends AppCompatActivity {
         // move to the new question
         counter++;
 
-        RefreshActivity();
+          if(counter!=25){
+            RefreshActivity();
+        }
+        else{
+            addTest();
+        }
+
+         //   addTest();
+
     }
 
     boolean areFieldsValid(ArrayList<String> fieldsStr){
@@ -166,4 +185,77 @@ public class AddTestActivity extends AppCompatActivity {
              })
                 .show();
     }
+
+    private boolean addTest() throws IOException {
+
+        DeserializeQuestionsFile();
+        ConvertStrToJsonQuestionFile();
+
+        AddTestToQuestinarieModel();
+
+        boolean result = SerializeQuestionsFile();
+        return false;
+    }
+
+    private void  DeserializeQuestionsFile(){
+
+        StringBuffer sb = new StringBuffer();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(getAssets().open(AppConstants.QUESTION_FILE)));
+            String temp;
+            while ((temp = br.readLine()) != null)
+                sb.append(temp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        str_QuestionsFile = sb.toString();
+    }
+
+
+    private void ConvertStrToJsonQuestionFile(){
+
+        Gson gson = new Gson();
+
+       ConvertQuestionsResult = gson.fromJson(str_QuestionsFile, Questinarie.class);
+
+    }
+
+    private void AddTestToQuestinarieModel(){
+
+        for (Question q:questions
+             ) {
+            ConvertQuestionsResult.getQuestionnaires().add(q);
+        }
+    }
+
+    private boolean SerializeQuestionsFile() throws IOException {
+
+        Gson gson = new Gson();
+
+        String strToWrite =  gson.toJson(ConvertQuestionsResult);
+
+        File path = this.getFilesDir();
+        File file = new File( path,AppConstants.JSON_Question_set_fileName);
+
+            FileOutputStream stream = new FileOutputStream(file, false);
+            try {
+                stream.write(strToWrite.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                stream.close();
+            }
+
+      return true;
+
+
+    }
+
 }
