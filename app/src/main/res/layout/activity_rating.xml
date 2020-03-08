@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.RatingActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sort By Rating "
+        android:layout_below="@id/toolbar">
+
+    </TextView>
+  <ImageButton
+      android:id="@+id/ib1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@drawable/arrow_down_white_18dp"
+      android:layout_toRightOf="@id/tv1"
+      android:layout_below="@id/toolbar"
+      android:layout_marginLeft="20dp">
+  </ImageButton>
+
+    <ImageButton
+        android:id="@+id/ib2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/ib1"
+        android:src="@drawable/arrow_up_white_18dp"
+        android:layout_below="@id/toolbar">
+
+    </ImageButton>
+    <LinearLayout
+        android:id="@+id/ll"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="100"
+        android:layout_below="@id/ib2">
+    <TextView
+        android:gravity="center"
+        android:id="@+id/_tvLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_weight="50"
+        android:text="Login"
+        android:layout_below="@id/ib2"
+        ></TextView>
+
+
+
+    <TextView
+        android:id="@+id/_tvRating"
+        android:gravity="center"
+        android:text="Score"
+        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_weight="25"
+
+        ></TextView>
+
+    <TextView
+
+        android:id="@+id/_tvAmountTest"
+        android:text="Amount"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:layout_weight="25"
+
+        ></TextView>
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/ib2"
+        android:paddingTop="50dp"
+        android:layout_marginTop="20dp"/>
+
+
+</RelativeLayout>

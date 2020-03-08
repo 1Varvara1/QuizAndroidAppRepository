@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rating_adapter_layout"
+    android:weightSum="100">
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/tvLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_weight="50"
+        android:text="Text1"
+     ></TextView>
+
+
+
+        <TextView
+            android:id="@+id/tvScore"
+            android:gravity="center"
+            android:text="Text2"
+            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="25"
+          ></TextView>
+
+        <TextView
+
+            android:id="@+id/tvAmountTest"
+            android:text="Text3"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:layout_weight="25"
+            ></TextView>
+
+</LinearLayout>

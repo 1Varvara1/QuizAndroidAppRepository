@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.quizapplication.R;
 import com.example.quizapplication.activity.BooksActivity;
 import com.example.quizapplication.activity.ProfileActivity;
+import com.example.quizapplication.activity.RatingActivity;
 import com.example.quizapplication.activity.TestNaming;
 
 public class AppUtilities {
@@ -105,5 +106,9 @@ public class AppUtilities {
 
     public static void openTestAddPage(Activity activity) {
         activity.startActivity(new Intent(activity , TestNaming.class));
+    }
+
+    public static void openRatingPage(Activity activity) {
+        activity.startActivity(new Intent(activity , RatingActivity.class));
     }
 }

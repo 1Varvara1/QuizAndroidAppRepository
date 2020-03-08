@@ -15,7 +15,7 @@ public  class MarkService {
     }
 
     public void AddMarkForUser(double markToAdd, Context context){
-        String login =prefService.getCurrentUserLogin(context);
+        String login = prefService.getCurrentUserLogin(context);
 
         Realm realm = Realm.getDefaultInstance();
 
@@ -26,6 +26,11 @@ public  class MarkService {
         realm.commitTransaction();
 
         realm.close();
+
+    }
+
+    private void AddTestsPass(String login){
+
 
     }
 

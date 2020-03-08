@@ -70,7 +70,7 @@ public class MainActivity extends BaseActivity {
 
         // if database is need to be initializated for the first time
 
-       /* StartInit start = new StartInit();
+     /* StartInit start = new StartInit();
         start.StartInit();*/
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -130,9 +130,10 @@ public class MainActivity extends BaseActivity {
                             new PrimaryDrawerItem().withName("My page").withIcon(R.drawable.profileb).withIdentifier(13).withSelectable(false),
                             new PrimaryDrawerItem().withName("Books").withIcon(R.drawable.bookb).withIdentifier(14).withSelectable(false),
                             new PrimaryDrawerItem().withName("Links").withIcon(R.drawable.linkb).withIdentifier(17).withSelectable(false),
+                            new PrimaryDrawerItem().withName("Rating").withIcon(R.drawable.list_numbered_black_18dp).withIdentifier(19).withSelectable(false),
 
                             new PrimaryDrawerItem().withName("AddTest").withIcon(R.drawable.edit_black_18dp).withIdentifier(18).withSelectable(false),
-
+                            new DividerDrawerItem(),
                             new SecondaryDrawerItem().withName("YouTube").withIcon(R.drawable.ic_youtube).withIdentifier(20).withSelectable(false),
                             new SecondaryDrawerItem().withName("Facebook").withIcon(R.drawable.ic_facebook).withIdentifier(21).withSelectable(false),
                             new SecondaryDrawerItem().withName("Twitter").withIcon(R.drawable.ic_twitter).withIdentifier(22).withSelectable(false),
@@ -172,6 +173,9 @@ public class MainActivity extends BaseActivity {
                                 }
                                 else if (drawerItem.getIdentifier() == 18) {
                                   AppUtilities.openTestAddPage(activity);
+                                }
+                                else if (drawerItem.getIdentifier() == 198) {
+                                    AppUtilities.openRatingPage(activity);
                                 }
                                 else if (drawerItem.getIdentifier() == 21) {
                                     AppUtilities.facebookLink(activity);
@@ -214,6 +218,7 @@ public class MainActivity extends BaseActivity {
                             new PrimaryDrawerItem().withName("Books").withIcon(R.drawable.bookb).withIdentifier(14).withSelectable(false),
                             new PrimaryDrawerItem().withName("Links").withIcon(R.drawable.linkb).withIdentifier(17).withSelectable(false),
 
+                            new DividerDrawerItem(),
                             new SecondaryDrawerItem().withName("YouTube").withIcon(R.drawable.ic_youtube).withIdentifier(20).withSelectable(false),
                             new SecondaryDrawerItem().withName("Facebook").withIcon(R.drawable.ic_facebook).withIdentifier(21).withSelectable(false),
                             new SecondaryDrawerItem().withName("Twitter").withIcon(R.drawable.ic_twitter).withIdentifier(22).withSelectable(false),
@@ -250,6 +255,7 @@ public class MainActivity extends BaseActivity {
                                 else if (drawerItem.getIdentifier() == 17) {
                                     //  AppUtilities.youtubeLink(activity);
                                 }
+
                                 else if (drawerItem.getIdentifier() == 21) {
                                     AppUtilities.facebookLink(activity);
                                 } else if (drawerItem.getIdentifier() == 22) {

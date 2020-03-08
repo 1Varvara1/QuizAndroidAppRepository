@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.TestNaming"></activity>
+        <activity android:name=".activity.RatingActivity"></activity>
+        <activity android:name=".activity.TestNaming" />
         <activity android:name=".activity.AddTestActivity" />
         <activity android:name=".activity.AddBookActivity" />
         <activity android:name=".activity.BooksActivity" />

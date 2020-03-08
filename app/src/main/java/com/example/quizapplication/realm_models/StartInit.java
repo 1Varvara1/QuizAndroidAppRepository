@@ -37,10 +37,9 @@ public class StartInit {
         pass.setRighAns(23);
         pass.setTotalAns(25);
         pass.setDate("16/02/2020 15:05");
-        realm.commitTransaction();
 
 
-        realm.beginTransaction();
+
         Book book = realm.createObject(Book.class);
         book.setName("CLR via C#");
         book.setTheme(".Net");
@@ -79,5 +78,7 @@ public class StartInit {
         book5.setAutor(" Adam Freeman");
         book5.setImageUrl("https://images-na.ssl-images-amazon.com/images/I/51gDJxpEX-L.jpg");
         realm.commitTransaction();
+
+        realm.close();
     }
 }
