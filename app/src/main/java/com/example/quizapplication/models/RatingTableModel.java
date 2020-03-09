@@ -1,6 +1,6 @@
 package com.example.quizapplication.models;
 
-public class RatingTableModel {
+public class RatingTableModel implements Comparable<RatingTableModel> {
 
     String Login;
     Double Score;
@@ -39,4 +39,9 @@ public class RatingTableModel {
     }
 
     Integer Amount ;
+
+    @Override
+    public int compareTo(RatingTableModel o) {
+        return getScore().compareTo(o.getScore());
+    }
 }

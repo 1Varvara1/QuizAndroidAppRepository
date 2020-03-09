@@ -46,12 +46,13 @@ public class RatingAdapter extends ArrayAdapter<RatingTableModel> {
         TextView txLogin  = (TextView) convertView.findViewById(R.id.tvLogin);
         TextView txScore  = (TextView) convertView.findViewById(R.id.tvScore);
         TextView txAmount  = (TextView) convertView.findViewById(R.id.tvAmountTest);
+        TextView txNum  = (TextView) convertView.findViewById(R.id.tvNum);
 
 
         txLogin.setText(login);
-        txScore.setText(score.toString());
+        txScore.setText(String.format("%.2f", score));
         txAmount.setText(amounnt.toString());
-
+        txNum.setText("#");
 
         return convertView;
 

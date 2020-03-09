@@ -124,7 +124,7 @@ public class ScoreCardActivity extends BaseActivity implements OnChartValueSelec
         mAdapter = new ResultAdapter(mContext, mActivity, mResultList);
         mRecyclerResult.setAdapter(mAdapter);
 
-        markService.AddMarkForUser(actualScore, this);
+        markService.AddMarkForUser(actualScore, this,mWrongAns, mQuestionsCount - mWrongAns, mScore);
         // show full-screen ads
         // TODO AdsUtilities.getInstance(mContext).showFullScreenAd();
         // show banner ads

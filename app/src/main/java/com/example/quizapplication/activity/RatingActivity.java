@@ -1,6 +1,8 @@
 package com.example.quizapplication.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import com.example.quizapplication.models.RatingTableModel;
 import com.example.quizapplication.realm_servces.UserService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class RatingActivity extends AppCompatActivity {
 
@@ -26,14 +29,44 @@ public class RatingActivity extends AppCompatActivity {
 
         service = new UserService();
 
-        initRecyclerView();
+        initRecyclerView(null);
     }
 
-    private void initRecyclerView(){
+    private void initRecyclerView(String sort ){
 
         ArrayList<RatingTableModel> data = service.getRatingInformation();
-        RatingAdapter recyclerListAdapter = new RatingAdapter(this,R.id.rating_adapter_layout,data);
+
+        if (sort == "decrease"){
+
+            decreaseSort(data);
+        }
+        else if (sort == "increase"){
+            increaseSort(data);
+        }
+
+        RatingAdapter recyclerListAdapter = new RatingAdapter(this,R.layout.rating_adapter,data);
         listView.setAdapter(recyclerListAdapter);
     }
 
+    private void  decreaseSort( ArrayList<RatingTableModel> data)
+    {
+        Collections.sort(data);
+        Collections.reverse(data);
+    }
+
+    private void  increaseSort( ArrayList<RatingTableModel> data){
+        Collections.sort(data);
+    }
+
+    public void sortDecrease(View view){
+        initRecyclerView("decrease");
+    }
+
+    public void sortIncrease(View view){
+        initRecyclerView("increase");
+    }
+
+    public void onBackClick(View view){
+        startActivity(new Intent(RatingActivity.this , MainActivity.class));
+    }
 }

@@ -7,11 +7,20 @@
     android:weightSum="100">
 
     <TextView
+        android:id="@+id/tvNum"
+        android:gravity="center"
+        android:text="#"
+        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_weight="10"
+        ></TextView>
+
+    <TextView
         android:gravity="center"
         android:id="@+id/tvLogin"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_weight="50"
+        android:layout_weight="40"
         android:text="Text1"
      ></TextView>
 

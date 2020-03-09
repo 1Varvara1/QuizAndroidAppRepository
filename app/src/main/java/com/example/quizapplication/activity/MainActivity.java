@@ -174,7 +174,7 @@ public class MainActivity extends BaseActivity {
                                 else if (drawerItem.getIdentifier() == 18) {
                                   AppUtilities.openTestAddPage(activity);
                                 }
-                                else if (drawerItem.getIdentifier() == 198) {
+                                else if (drawerItem.getIdentifier() == 19) {
                                     AppUtilities.openRatingPage(activity);
                                 }
                                 else if (drawerItem.getIdentifier() == 21) {

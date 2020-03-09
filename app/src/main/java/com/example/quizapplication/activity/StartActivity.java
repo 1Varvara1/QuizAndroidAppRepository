@@ -36,10 +36,103 @@ public class StartActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
         root = findViewById(R.id.root_element);
 
-
-
     }
+
     public void btnRegisterClick(View view){
+
+        LayoutInflater inflater =  LayoutInflater.from(this);
+        View register_window= inflater.inflate(R.layout.register_window, null);
+
+
+        final MaterialEditText email = register_window.findViewById(R.id.emailField);
+        final MaterialEditText password = register_window.findViewById(R.id.passwordField);
+        final MaterialEditText name = register_window.findViewById(R.id.nameField);
+
+        registerMessTextView = register_window.findViewById(R.id.registerErrorField);
+       // registerMessTextView.setText("");
+
+
+        final AlertDialog dialog = new AlertDialog.Builder(this, R.style.AlertDialog)
+                .setView(register_window)
+                .setTitle("Регистрация")
+                .setMessage("Введите все данные для регистрации")
+                .setPositiveButton("Submit", null)
+                .setNegativeButton("Cancel", null)
+                .create();
+
+
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+
+                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+
+                        String emailStr = email.getText().toString();
+                        String passwordStr = password.getText().toString();
+                        String loginStr = name.getText().toString();
+
+
+                        if (TextUtils.isEmpty(emailStr)) {
+                             registerMessTextView.setText("Enter your Email");
+                        //    Snackbar.make(root, "Enter your Email", Snackbar.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else if (TextUtils.isEmpty(loginStr)) {
+                            registerMessTextView.setText("Enter your Name");
+                         //   Snackbar.make(root, "Enter your Name", Snackbar.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else if (passwordStr.length() < 4) {
+                             registerMessTextView.setText("Enter your Password( more than 4 characters)");
+                        //    Snackbar.make(root, "Enter your Password( more than 4 characters)", Snackbar.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        else if(authService.isEmailTaken(emailStr)){
+                            registerMessTextView.setText("Пользователь с таким email уже существует");
+                           // Snackbar.make(root, "Пользователь с таким email уже существует", Snackbar.LENGTH_SHORT).show();
+
+                        }
+                        else if(authService.isLoginTaken(loginStr)){
+                              registerMessTextView.setText("Пользователь с таким login уже существует");
+                          //  Snackbar.make(root, "Пользователь с таким login уже существует", Snackbar.LENGTH_SHORT).show();
+
+                        }
+                        else{
+                            authService.AddUser(loginStr,passwordStr,emailStr);
+                            dialog.dismiss();
+                            Snackbar.make(root, "User was added", Snackbar.LENGTH_SHORT).
+                                    show();
+                        }
+
+                    }
+                });
+
+
+                Button buttonNegative = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                buttonNegative.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        // TODO Do something
+
+                        //Dismiss once everything is OK.
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+        dialog.show();
+    }
+
+
+   /* public void btnRegisterClick(View view){
         AlertDialog.Builder dialog =  new  AlertDialog.Builder( this,R.style.AlertDialog) ;
         dialog.setTitle("Регистрация");
         dialog.setMessage("Введите все данные для регистрации");
@@ -108,9 +201,86 @@ public class StartActivity extends AppCompatActivity {
             }
         });
         dialog.show();
-    }
+    }*/
+
 
     public void btnLogInClick(View view){
+        LayoutInflater inflater =  LayoutInflater.from(this);
+        View login_window= inflater.inflate(R.layout.login_window, null);
+
+
+        final MaterialEditText login = login_window.findViewById(R.id.loginField);
+        final MaterialEditText password = login_window.findViewById(R.id.passwordField);
+        loginMessTextView = login_window.findViewById(R.id.loginErrorField);
+
+        final AlertDialog dialog = new AlertDialog.Builder(this, R.style.AlertDialog)
+                .setView(login_window)
+                .setTitle("Вход")
+                .setMessage("Введите все данные для входа")
+                .setPositiveButton("Submit", null) //Set to null. We override the onclick
+                .setNegativeButton("Cancel", null)
+                .create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+
+                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+
+                        String loginStr = login.getText().toString();
+                        String passwordStr = password.getText().toString();
+
+
+                        if(TextUtils.isEmpty(loginStr))
+                        {
+                            loginMessTextView.setText("Enter Login");
+                            //Snackbar.make(root, "Enter Login", Snackbar.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if(passwordStr.length()<4)
+                        {
+                            loginMessTextView.setText("Enter your Password(more 4 characters)");
+                            //Snackbar.make(root, "Enter your Password(more 4 characters)", Snackbar.LENGTH_SHORT).show();
+                            return;
+                        }
+                        User user = authService.isAccountExists( loginStr,passwordStr);
+                        if(user==null){
+                            loginMessTextView.setText("Your login or password is incorrect");
+
+                            //   Snackbar.make(root,"Ошибка авторизации",Snackbar.LENGTH_SHORT).show();
+                        }
+                        else{
+                            setSharedPreferences(user.getLogin(), user.getEmail(),user.getRole());
+                            ActivityUtilities.getInstance().invokeNewActivity(StartActivity.this, MainActivity.class, true);
+                        }
+                    }
+                });
+
+
+                Button buttonNegative = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                buttonNegative.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        // TODO Do something
+
+                        //Dismiss once everything is OK.
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+        dialog.show();
+    }
+
+
+   /* public void btnLogInClick(View view){
         AlertDialog.Builder dialog =  new  AlertDialog.Builder(this, R.style.AlertDialog) ;
         dialog.setTitle("Вход");
         dialog.setMessage("Введите все данные для входа");
@@ -167,7 +337,8 @@ public class StartActivity extends AppCompatActivity {
 
         dialog.show();
 
-    }
+    }*/
+
 
     public void setSharedPreferences(String login, String email, String role ){
         SharedPreferences sPref = getSharedPreferences("sPrefer",MODE_PRIVATE);
