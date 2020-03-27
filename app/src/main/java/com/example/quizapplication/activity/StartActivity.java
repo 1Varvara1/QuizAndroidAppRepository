@@ -54,8 +54,8 @@ public class StartActivity extends AppCompatActivity {
 
         final AlertDialog dialog = new AlertDialog.Builder(this, R.style.AlertDialog)
                 .setView(register_window)
-                .setTitle("Регистрация")
-                .setMessage("Введите все данные для регистрации")
+                .setTitle("Register")
+                .setMessage("Enter information for registration")
                 .setPositiveButton("Submit", null)
                 .setNegativeButton("Cancel", null)
                 .create();
@@ -95,12 +95,12 @@ public class StartActivity extends AppCompatActivity {
                         }
 
                         else if(authService.isEmailTaken(emailStr)){
-                            registerMessTextView.setText("Пользователь с таким email уже существует");
+                            registerMessTextView.setText("User with such email is already exists");
                            // Snackbar.make(root, "Пользователь с таким email уже существует", Snackbar.LENGTH_SHORT).show();
 
                         }
                         else if(authService.isLoginTaken(loginStr)){
-                              registerMessTextView.setText("Пользователь с таким login уже существует");
+                              registerMessTextView.setText("User with such login is already exists");
                           //  Snackbar.make(root, "Пользователь с таким login уже существует", Snackbar.LENGTH_SHORT).show();
 
                         }
@@ -215,8 +215,8 @@ public class StartActivity extends AppCompatActivity {
 
         final AlertDialog dialog = new AlertDialog.Builder(this, R.style.AlertDialog)
                 .setView(login_window)
-                .setTitle("Вход")
-                .setMessage("Введите все данные для входа")
+                .setTitle("Sign in")
+                .setMessage("Enter your login and password to sign in")
                 .setPositiveButton("Submit", null) //Set to null. We override the onclick
                 .setNegativeButton("Cancel", null)
                 .create();
