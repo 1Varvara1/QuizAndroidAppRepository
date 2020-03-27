@@ -26,7 +26,7 @@
       android:id="@+id/ib1"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:src="@drawable/arrow_down_white_18dp"
+      android:src="@drawable/check_white_36dp"
       android:layout_toRightOf="@id/tv1"
       android:layout_below="@id/toolbar"
       android:onClick="sortDecrease"
@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/ib1"
-        android:src="@drawable/arrow_up_white_18dp"
+        android:src="@drawable/check_white_36dp"
         android:onClick="sortIncrease"
         android:layout_below="@id/toolbar">
 
